@@ -27,22 +27,14 @@ const actions = {
   },
 
   saveSite({ commit, state }, params) {
-    // eslint-disable-next-line
     const headers = params.headers
-    const site = params.site
-    // const data = { "name": site.name }
-    // console.log(data)
+    const name = params.name
 
-    api.post('/sites', {"name": `${site.name}`},
+    api.post('/sites', {"name": `${name}`},
       { headers }).then(function (response) {
-        // eslint-disable-next-line
-        // console.log(response)
-        commit('SET_ACTIVE_SITE', response.data)
-        // this.$store.dispatch('sites/setActiveSite', this.site)
-        // this.$router.push({ name: 'site-show', params: { id: this.site.id }})
-        // if(response.status === 200) {
-        //   commit('SET_SITES', response.data)
-        // }
+        if(response.status === 200) {
+          commit('SET_ACTIVE_SITE', response.data)
+        }
     }.bind(this))
     .catch(function (error) {
       // eslint-disable-next-line
@@ -51,26 +43,30 @@ const actions = {
 
   },
 
-  // getSite({commit, state}, headers, id) {
-  //   api.get(`/sites/${id}`,
-  //     { headers }).then(function (response) {
-  //       // eslint-disable-next-line
-  //       console.log(response)
-  //       // if(response.status === 200) {
-  //       //   commit('SET_SITES', response.data)
-  //       // }
-  //   }.bind(this))
-  //   .catch(function (error) {
-  //     // eslint-disable-next-line
-  //     console.warn(error.response);
-  //   });
-  // },
-
   setActiveSite({ commit, state }, site) {
     commit('SET_ACTIVE_SITE', site)
   },
 
+  deleteSite({ commit, state }, params) {
 
+    const headers = params.headers
+    const id = params.id
+
+    api.delete(`/sites/${id}`,
+      { headers }).then(function (response) {
+        // eslint-disable-next-line
+        console.log(response)
+        commit('CLEAR_ACTIVE_SITE')
+        // commit('DELETE_SITE', id)
+        // if(response.status === 200) {
+        //   commit('SET_ACTIVE_SITE', response.data)
+        // }
+    }.bind(this))
+    .catch(function (error) {
+      // eslint-disable-next-line
+      console.warn(error.response);
+    });
+  },
 
   clearActiveSite({ commit, state }) {
     commit('CLEAR_ACTIVE_SITE')

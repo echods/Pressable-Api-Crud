@@ -32,6 +32,14 @@ export default {
   components: {
     'site-item': SiteItem
   },
+  data() {
+    return {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.account.access_token}`,
+          Content: 'application/json'
+        }
+    }
+  },
   computed: {
     sites() {
       return this.$store.state.sites.list;
@@ -39,13 +47,7 @@ export default {
   },
   methods: {
     getSites() {
-
-      const headers = {
-        Authorization: `Bearer ${this.$store.state.account.access_token}`,
-        Content: 'application/json'
-      }
-
-      this.$store.dispatch('sites/getSites', headers)
+      this.$store.dispatch('sites/getSites', this.headers)
     }
   },
   mounted() {

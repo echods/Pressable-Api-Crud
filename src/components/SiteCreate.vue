@@ -2,15 +2,15 @@
   <div class="row">
     <div class="col">
       <div class="row">
-        <h1 class="mb-5">Create a site: {{ site.name }}</h1>
+        <h1 class="mb-5">Create a site: {{ name }}</h1>
       </div>
       <div class="row">
         <div class="col">
           <form>
             <div class="form-group">
-              <label class="text-left" for="name">Enter site name</label>
+              <label class="text-left" for="name">Enter site name. Actual site name: {{siteName}}</label>
               <input type="text" class="form-control" id="name" placeholder="Enter the site name of your choice"
-                v-model="site.name">
+                v-model="name">
             </div>
             <button type="submit" class="btn btn-primary" @click.stop.prevent="saveSite">Submit</button>
           </form>
@@ -26,9 +26,12 @@ export default {
   name: 'SiteCreate',
   data() {
     return {
-      site: {
-        name: ''
-      }
+      name: ''
+    }
+  },
+  computed: {
+    siteName() {
+      return this.name.replace(' ', '')
     }
   },
   methods: {
@@ -38,7 +41,7 @@ export default {
           Authorization: `Bearer ${this.$store.state.account.access_token}`,
           Content: 'application/json'
         },
-        site: this.site
+        name: this.siteName
       }
 
       this.$store.dispatch('sites/saveSite', params)
