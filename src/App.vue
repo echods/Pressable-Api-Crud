@@ -1,7 +1,31 @@
 <template>
   <div id="app">
-    <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <router-view></router-view>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Pressable API Vue Example</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <router-link :to="{ name: 'home' }" class="nav-link">Home</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'sites' }" class="nav-link">Sites</router-link>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-10">
+                <router-view></router-view>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -19,6 +43,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+.container-fluid {
+    padding-top: 60px;
 }
 </style>

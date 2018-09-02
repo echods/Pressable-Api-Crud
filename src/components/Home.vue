@@ -1,36 +1,52 @@
 <template>
   <div class="hello">
-    This is home
+    <input type="text" v-model="email">
+    <input type="password" v-model="password">
+    <button @click="authenticate">Login</button>
   </div>
 </template>
 
 <script>
 
-import api from '../api'
+import auth from '../api/auth'
 
 export default {
   name: 'Home',
+  data() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
   methods: {
-    authUser() {
-      api.post('/token', {
+    authenticate() {
+
+      auth.post('/token', {
         client_id: process.env.VUE_APP_CLIENT_ID,
         client_secret: process.env.VUE_APP_CLIENT_SECRET,
         email: process.env.VUE_APP_EMAIL,
         password: process.env.VUE_APP_PASSWORD,
+        // email: this.email,
+        // password: this.password,
         grant_type: 'password'
       })
       .then(function (response) {
         // eslint-disable-next-line
-        console.log(response);
-      })
+        if(response.status === 200) {
+          this.$store.dispatch('account/setTokens', response.data)
+          this.$router.push({ name: "sites" })
+        }
+      }.bind(this))
       .catch(function (error) {
         // eslint-disable-next-line
-        console.log(error);
+        console.warn(error.response);
       });
     }
   },
   mounted() {
-    this.authUser()
+    this.authenticate()
+    // eslint-disable-next-line
+    console.log(this.$store.state)
   }
 }
 </script>
