@@ -1,6 +1,13 @@
 <template>
   <div class="row row-wrapper">
+
     <div class="col">
+
+      <div class="row">
+        <div class="col">
+          <h1 class="page-title mb-5">Site: {{ site.name }}</h1>
+        </div>
+      </div>
 
       <div class="row row-data">
         <div class="col site-left">
@@ -150,19 +157,15 @@ export default {
     // }
   },
   mounted() {
-    this.getSite();
+    // this.getSite();
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.site-left {
-  text-align: right;
-}
-
-.site-right {
-  text-align: left;
+.row-wrapper {
+  padding-bottom: 50px;
 }
 
 .row-data {
@@ -170,7 +173,11 @@ export default {
   padding: 7px 0;
 }
 
-.row-wrapper {
-  padding-bottom: 50px;
+.site-left {
+  text-align: right;
+}
+
+.site-right {
+  text-align: left;
 }
 </style>

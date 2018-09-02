@@ -14,6 +14,10 @@
           <li class="nav-item">
             <router-link :to="{ name: 'sites' }" class="nav-link">Sites</router-link>
           </li>
+
+          <li class="nav-item">
+            <router-link :to="{ name: 'site-create' }" class="nav-link">Create Site</router-link>
+          </li>
         </ul>
       </div>
     </nav>

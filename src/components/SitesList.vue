@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <h1>Your Pressable Sites</h1>
-    <router-link to="create-site" class="btn btn-primary ml-auto create-site">Create Site</router-link>
+    <router-link :to="{ name: 'site-create' }" class="btn btn-primary ml-auto create-site">Create Site</router-link>
     <table class="table">
       <thead class="thead-dark">
         <tr>
@@ -25,7 +25,6 @@
 
 <script>
 
-import api from '../api'
 import SiteItem from './SiteItem.vue'
 
 export default {
