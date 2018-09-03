@@ -46,7 +46,7 @@ export default {
     }
   },
   mounted() {
-    this.authenticate()
+    // this.authenticate()
     // eslint-disable-next-line
     console.log(this.$store.state)
   }
