@@ -1,9 +1,11 @@
 import api from '../../api'
+import swal from 'sweetalert'
 
 // initial state
 const state = {
   list: [],
-  active: ''
+  active: '',
+  loading: true
 }
 
 // getters
@@ -32,13 +34,17 @@ const actions = {
 
     api.post('/sites', {"name": `${name}`},
       { headers }).then(function (response) {
-        if(response.status === 200) {
+        // eslint-disable-next-line
+        console.log(response)
+        if(response.status === 201) {
           commit('SET_ACTIVE_SITE', response.data)
+          const currentState = response.data.state
+          swal("Great!", `Your site is being created and is currently ${currentState}. It will be done momentarily!`, "success");
         }
     }.bind(this))
     .catch(function (error) {
-      // eslint-disable-next-line
-      console.warn(error.response);
+      const message = error.response.data.error
+      swal("An error occurred", message, "error");
     });
 
   },
@@ -77,6 +83,7 @@ const actions = {
 const mutations = {
   SET_SITES(state, sites) {
     state.list = sites
+    state.loading = false
   },
 
   SET_ACTIVE_SITE(state, site) {

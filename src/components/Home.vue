@@ -26,10 +26,10 @@ export default {
       auth.post('/token', {
         client_id: process.env.VUE_APP_CLIENT_ID,
         client_secret: process.env.VUE_APP_CLIENT_SECRET,
-        // email: process.env.VUE_APP_EMAIL,
-        // password: process.env.VUE_APP_PASSWORD,
-        email: this.email,
-        password: this.password,
+        email: process.env.VUE_APP_EMAIL,
+        password: process.env.VUE_APP_PASSWORD,
+        // email: this.email,
+        // password: this.password,
         grant_type: 'password'
       })
       .then(function (response) {

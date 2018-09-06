@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     siteName() {
-      return this.name.replace(' ', '')
+      return this.name.replace(/\s/g, '')
     }
   },
   methods: {

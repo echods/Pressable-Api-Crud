@@ -4,8 +4,7 @@
       <td>{{ site.name }}</td>
       <td>{{ site.ipAddress }}</td>
       <td>{{ site.pageViewsAllTime }}</td>
-      <td><a href="#">Edit</a></td>
-      <td><a href="#" @click.stop.prevent="deleteSite">Del</a></td>
+      <td><a href="#" @click.stop.prevent="deleteSite"><i class="far fa-trash-alt"></i></a></td>
     </tr>
 </template>
 
