@@ -21,6 +21,7 @@
               <th scope="col">Name</th>
               <th scope="col">IP Address</th>
               <th scope="col">All Page Views</th>
+              <th scope="30">Clone</th>
               <th width="30">Delete</th>
             </tr>
           </thead>

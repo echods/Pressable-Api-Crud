@@ -53,6 +53,19 @@ const actions = {
     commit('SET_ACTIVE_SITE', site)
   },
 
+  cloneSite({ commit, state }, params) {
+
+    const headers = params.headers
+    const id = params.id
+    const name = params.name
+
+    api.post(`/sites/${id}/clone`, {"name": `${name}`},
+      { headers }).then(function (response) {
+
+      });
+
+  },
+
   deleteSite({ commit, state }, params) {
 
     const headers = params.headers
@@ -60,17 +73,30 @@ const actions = {
 
     api.delete(`/sites/${id}`,
       { headers }).then(function (response) {
-        // eslint-disable-next-line
-        console.log(response)
-        commit('CLEAR_ACTIVE_SITE')
-        // commit('DELETE_SITE', id)
-        // if(response.status === 200) {
-        //   commit('SET_ACTIVE_SITE', response.data)
-        // }
+
+        swal({
+          title: "Are you sure?",
+          text: "Are you sure you want to delete this site?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then(willDelete => {
+          // eslint-disable-next-line
+          console.log('delete')
+          if (willDelete) {
+            // eslint-disable-next-line
+            console.log(response)
+            commit('CLEAR_ACTIVE_SITE')
+            // commit('DELETE_SITE', id)
+            swal("Deleted!", "Your site has been deleted!", "success");
+          }
+        });
+
     }.bind(this))
     .catch(function (error) {
       // eslint-disable-next-line
-      console.warn(error.response);
+      console.warn(error);
     });
   },
 

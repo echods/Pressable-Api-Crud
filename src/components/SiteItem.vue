@@ -4,7 +4,16 @@
       <td>{{ site.name }}</td>
       <td>{{ site.ipAddress }}</td>
       <td>{{ site.pageViewsAllTime }}</td>
-      <td><a href="#" @click.stop.prevent="deleteSite"><i class="far fa-trash-alt"></i></a></td>
+      <td>
+        <a href="#" @click.stop.prevent="cloneSite">
+          <i class="fas fa-clone"></i>
+        </a>
+      </td>
+      <td>
+        <a href="#" @click.stop.prevent="deleteSite">
+          <i class="far fa-trash-alt"></i>
+        </a>
+      </td>
     </tr>
 </template>
 
@@ -32,28 +41,20 @@ export default {
       this.$store.dispatch('sites/setActiveSite', this.site)
       this.$router.push({ name: 'site-show', params: { id: this.site.id }})
     },
+    cloneSite() {
+      const params = {
+        headers: this.headers,
+        id: this.site.id
+      }
+      this.$store.dispatch('sites/cloneSite', params)
+    },
     deleteSite() {
+      const params = {
+        headers: this.headers,
+        id: this.site.id
+      }
 
-      swal({
-        title: "Are you sure?",
-        text: "Are you sure you want to delete this site?",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      })
-      .then(willDelete => {
-        const params = {
-          headers: this.headers,
-          id: this.site.id
-        }
-
-        this.$store.dispatch('sites/deleteSite', params)
-        // eslint-disable-next-line
-        console.log('delete')
-        if (willDelete) {
-          swal("Deleted!", "Your site has been deleted!", "success");
-        }
-      });
+      this.$store.dispatch('sites/deleteSite', params)
     }
   },
   mounted() {

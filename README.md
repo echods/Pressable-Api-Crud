@@ -22,4 +22,4 @@ yarn run lint
 
 ## Notes
 
-View [notes from the api](/notes).
+View [notes from the api](/notes.md).
