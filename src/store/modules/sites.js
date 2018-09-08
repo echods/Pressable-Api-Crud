@@ -13,8 +13,7 @@ const getters = {}
 
 // actions
 const actions = {
-  getSites({ commit, state }, headers) {
-
+  getSites({ commit, state, dispatch }, headers) {
     api.get('/sites',
       { headers }).then(function (response) {
         if(response.status === 200) {
@@ -22,8 +21,14 @@ const actions = {
         }
     }.bind(this))
     .catch(function (error) {
+
+      if(error.response.status === 401) {
+        dispatch('account/refreshToken', {}, { root:true })
+      }
+
       // eslint-disable-next-line
       console.warn(error.response);
+      commit('SET_SITES', [])
     });
 
   },
@@ -53,7 +58,7 @@ const actions = {
     commit('SET_ACTIVE_SITE', site)
   },
 
-  cloneSite({ commit, state }, params) {
+  cloneSite({ commit, state, dispatch }, params) {
 
     const headers = params.headers
     const id = params.id
@@ -61,42 +66,42 @@ const actions = {
 
     api.post(`/sites/${id}/clone`, {"name": `${name}`},
       { headers }).then(function (response) {
-
+        if(response.status === 201) {
+          swal("Great!", `Your site is being cloned and is titled ${response.data.name}. It will be done momentarily!`, "success");
+          dispatch('getSites')
+        }
       });
 
   },
 
-  deleteSite({ commit, state }, params) {
+  deleteSite({ commit, state, dispatch }, params) {
 
     const headers = params.headers
     const id = params.id
 
-    api.delete(`/sites/${id}`,
-      { headers }).then(function (response) {
+    swal({
+      title: "Are you sure?",
+      text: "Are you sure you want to delete this site?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then(willDelete => {
 
-        swal({
-          title: "Are you sure?",
-          text: "Are you sure you want to delete this site?",
-          icon: "warning",
-          buttons: true,
-          dangerMode: true,
-        })
-        .then(willDelete => {
+      if (willDelete) {
+
+        api.delete(`/sites/${id}`,
+          { headers }).then(function (response) {
+            if(response.status === 200) {
+              dispatch('getSites', headers)
+              swal("Deleted!", "Your site has been deleted!", "success");
+            }
+        }.bind(this))
+        .catch(function (error) {
           // eslint-disable-next-line
-          console.log('delete')
-          if (willDelete) {
-            // eslint-disable-next-line
-            console.log(response)
-            commit('CLEAR_ACTIVE_SITE')
-            // commit('DELETE_SITE', id)
-            swal("Deleted!", "Your site has been deleted!", "success");
-          }
+          console.warn(error.response);
         });
-
-    }.bind(this))
-    .catch(function (error) {
-      // eslint-disable-next-line
-      console.warn(error);
+      }
     });
   },
 

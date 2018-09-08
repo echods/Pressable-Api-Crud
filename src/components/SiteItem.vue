@@ -33,7 +33,8 @@ export default {
         headers: {
           Authorization: `Bearer ${this.$store.state.account.access_token}`,
           Content: 'application/json',
-        }
+        },
+        random: ''
     }
   },
   methods: {
@@ -42,9 +43,13 @@ export default {
       this.$router.push({ name: 'site-show', params: { id: this.site.id }})
     },
     cloneSite() {
+
+      this.randomString()
+
       const params = {
         headers: this.headers,
-        id: this.site.id
+        id: this.site.id,
+        name: this.site.name + this.random
       }
       this.$store.dispatch('sites/cloneSite', params)
     },
@@ -55,6 +60,13 @@ export default {
       }
 
       this.$store.dispatch('sites/deleteSite', params)
+    },
+    randomString() {
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+      for (var i = 0; i < 4; i++) {
+        this.random += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
     }
   },
   mounted() {

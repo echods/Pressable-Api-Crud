@@ -13,6 +13,14 @@ const router = new VueRouter({
   routes // short for `routes: routes`
 })
 
+router.beforeEach((to, from, next) => {
+  if(store.state.account.access_token) {
+    next()
+  } else {
+    next({path: '/'})
+  }
+})
+
 new Vue({
   router,
   store,

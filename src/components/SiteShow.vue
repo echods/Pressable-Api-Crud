@@ -126,6 +126,16 @@
         </div>
       </div>
 
+      <div class="row">
+        <div class="col">
+          <h2>Collaborators</h2>
+          <div v-for="collaborator in collaborators">
+            <strong>User name:</strong> {{ collaborator.name }}
+            <strong>WP username:</strong> {{ collaborator.wpUsername }}
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -137,25 +147,25 @@ export default {
   computed: {
     site() {
       return this.$store.state.sites.active
+    },
+    collaborators() {
+      return this.$store.state.collaborators.list
     }
   },
   methods: {
-    // getSite() {
-    //   if(!this.site) {
-    //     const headers = {
-    //       Authorization: `Bearer ${this.$store.state.account.access_token}`,
-    //       Content: 'application/json'
-    //     }
-
-    //     // eslint-disable-next-line
-    //     const id = this.$route.params.id
-
-    //     this.$store.dispatch('sites/getSite', headers, id)
-    //   }
-    // }
+    getCollaborators() {
+        const params = {
+            headers: {
+                Authorization: `Bearer ${this.$store.state.account.access_token}`,
+                Content: 'application/json'
+            },
+            id: this.$store.state.sites.active.id
+        }
+        this.$store.dispatch('collaborators/getCollaborators', params)
+    }
   },
   mounted() {
-    // this.getSite();
+    this.getCollaborators()
   }
 }
 </script>

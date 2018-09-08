@@ -1,17 +1,26 @@
 <template>
-  <div class="hello">
-    <form>
-        <input type="text" v-model="email">
-        <input type="password" v-model="password">
-        <button @click.stop.prevent="authenticate">Login</button>
-    </form>
+  <div class="hello row justify-content-center">
+    <div class="col-6 text-center" v-if="isLoggedIn">
+      <h1>You are already logged in</h1>
+      <p>Go to <router-link to="sites">Sites</router-link></p>
+    </div>
+    <div class="col-6 text-left" v-else>
+      <form>
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" v-model="email">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="Password" v-model="password">
+        </div>
+        <button type="submit" class="btn btn-primary" @click.stop.prevent="authenticate">Login</button>
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
-
-import auth from '../api/auth'
-
 export default {
   name: 'Home',
   data() {
@@ -20,35 +29,23 @@ export default {
       password: ''
     }
   },
+  computed: {
+    isLoggedIn() {
+        return (this.$store.state.account.isAuthenticated)
+    }
+  },
   methods: {
     authenticate() {
 
-      auth.post('/token', {
-        client_id: process.env.VUE_APP_CLIENT_ID,
-        client_secret: process.env.VUE_APP_CLIENT_SECRET,
-        // email: process.env.VUE_APP_EMAIL,
-        // password: process.env.VUE_APP_PASSWORD,
+      const params = {
         email: this.email,
         password: this.password,
-        grant_type: 'password'
-      })
-      .then(function (response) {
-        // eslint-disable-next-line
-        if(response.status === 200) {
-          this.$store.dispatch('account/setTokens', response.data)
-          this.$router.push({ name: "sites" })
-        }
-      }.bind(this))
-      .catch(function (error) {
-        // eslint-disable-next-line
-        console.warn(error.response);
-      });
+      }
+
+      this.$store.dispatch('account/authorize', params)
     }
   },
   mounted() {
-    // this.authenticate()
-    // eslint-disable-next-line
-    console.log(this.$store.state)
   }
 }
 </script>
