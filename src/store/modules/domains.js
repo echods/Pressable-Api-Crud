@@ -4,7 +4,6 @@ import swal from 'sweetalert'
 // initial state
 const state = {
   list: [],
-  active: '',
   loading: true
 }
 
@@ -13,14 +12,16 @@ const getters = {}
 
 // actions
 const actions = {
-  getCollaborators({ commit, state }, params) {
-    const headers = params.headers
-    const id = params.id
+  getDomains({ commit, state }, params) {
 
-    api.get(`/sites/${id}/collaborators`,
+    const headers = params.headers
+    const siteId = params.siteId
+
+    api.get(`/sites/${siteId}/domains`,
       { headers }).then(function (response) {
+        // eslint-disable-next-line
         if(response.status === 200) {
-          commit('GET_COLLABORATORS', response.data)
+          commit('GET_DOMAINS', response.data)
         }
     }.bind(this))
     .catch(function (error) {
@@ -29,17 +30,17 @@ const actions = {
     });
   },
 
-  createCollaborator({ commit, state, dispatch }, params) {
+  createDomain({ commit, state, dispatch }, params) {
 
     const headers = params.headers
     const siteId = params.siteId
-    const email = params.email
+    const url = params.url
 
-    api.post(`/sites/${siteId}/collaborators`, { "siteId": siteId, "email": `${email}` },
+    api.post(`/sites/${siteId}/domains`, { "url": `${url}` },
       { headers }).then(function (response) {
         if(response.status === 201) {
-          dispatch('getCollaborators')
-          swal("Great!", `Your collaborator ${email} is being added and will need to verify their email address.`, "success");
+          dispatch('getDomains')
+          swal("Great!", `Your domain ${url} is being added.`, "success");
         }
     }.bind(this))
     .catch(function (error) {
@@ -48,11 +49,11 @@ const actions = {
     });
   },
 
-  deleteCollaborator({ commit, state, dispatch }, params) {
+  deleteDomain({ commit, state, dispatch }, params) {
 
     const headers = params.headers
     const siteId = params.siteId
-    const collaboratorId = params.collaboratorId
+    const domainId = params.domainId
 
     swal({
       title: "Are you sure?",
@@ -65,12 +66,12 @@ const actions = {
 
       if (willDelete) {
 
-        api.delete(`/sites/${siteId}/collaborators/${collaboratorId}`,
+        api.delete(`/sites/${siteId}/domains/${domainId}`,
           { headers }).then(function (response) {
-            // console.log(response)
+            console.log(response)
             if(response.status === 200) {
-              dispatch('getCollaborators')
-              swal("Deleted!", "Your collaborator has been deleted!", "success");
+              dispatch('getDomains')
+              swal("Deleted!", "Your domain has been deleted!", "success");
             }
         }.bind(this))
         .catch(function (error) {
@@ -79,14 +80,14 @@ const actions = {
         });
       }
     });
-  },
+  }
 
 }
 
 // mutations
 const mutations = {
-  GET_COLLABORATORS(state, collaborators) {
-    state.list = collaborators
+  GET_DOMAINS(state, domains) {
+    state.list = domains
     state.loading = false
   }
 }

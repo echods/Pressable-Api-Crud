@@ -42,9 +42,7 @@ import SiteItem from './SiteItem.vue'
 
 export default {
   name: 'SitesList',
-  components: {
-    'site-item': SiteItem
-  },
+  components: {SiteItem},
   data() {
     return {
         headers: {

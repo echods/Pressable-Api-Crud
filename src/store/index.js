@@ -4,6 +4,7 @@ import createPersistedState from "vuex-persistedstate";
 import account from './modules/account'
 import sites from './modules/sites'
 import collaborators from './modules/collaborators'
+import domains from './modules/domains'
 
 Vue.use(Vuex)
 
@@ -13,7 +14,8 @@ export default new Vuex.Store({
   modules: {
     account,
     sites,
-    collaborators
+    collaborators,
+    domains
   },
   plugins: [createPersistedState()]
 })
