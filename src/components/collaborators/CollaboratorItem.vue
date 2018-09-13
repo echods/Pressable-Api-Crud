@@ -30,7 +30,7 @@
             Authorization: `Bearer ${this.$store.state.account.access_token}`,
             Content: 'application/json',
           },
-          siteId: this.$store.state.sites.active.id,
+          id: this.$store.state.sites.active.id,
           collaboratorId: this.collaborator.id
         }
 

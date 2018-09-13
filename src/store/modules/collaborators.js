@@ -32,13 +32,13 @@ const actions = {
   createCollaborator({ commit, state, dispatch }, params) {
 
     const headers = params.headers
-    const siteId = params.siteId
+    const id = params.id
     const email = params.email
 
-    api.post(`/sites/${siteId}/collaborators`, { "siteId": siteId, "email": `${email}` },
+    api.post(`/sites/${id}/collaborators`, { "siteId": id, "email": `${email}` },
       { headers }).then(function (response) {
         if(response.status === 201) {
-          dispatch('getCollaborators')
+          dispatch('getCollaborators', params)
           swal("Great!", `Your collaborator ${email} is being added and will need to verify their email address.`, "success");
         }
     }.bind(this))
@@ -51,7 +51,7 @@ const actions = {
   deleteCollaborator({ commit, state, dispatch }, params) {
 
     const headers = params.headers
-    const siteId = params.siteId
+    const id = params.id
     const collaboratorId = params.collaboratorId
 
     swal({
@@ -65,11 +65,11 @@ const actions = {
 
       if (willDelete) {
 
-        api.delete(`/sites/${siteId}/collaborators/${collaboratorId}`,
+        api.delete(`/sites/${id}/collaborators/${collaboratorId}`,
           { headers }).then(function (response) {
             // console.log(response)
             if(response.status === 200) {
-              dispatch('getCollaborators')
+              dispatch('getCollaborators', params)
               swal("Deleted!", "Your collaborator has been deleted!", "success");
             }
         }.bind(this))
@@ -81,6 +81,10 @@ const actions = {
     });
   },
 
+  clearAll( {commit, state} ) {
+    commit('CLEAR_ALL')
+  }
+
 }
 
 // mutations
@@ -88,6 +92,12 @@ const mutations = {
   GET_COLLABORATORS(state, collaborators) {
     state.list = collaborators
     state.loading = false
+  },
+
+  CLEAR_ALL(state) {
+    state.list = []
+    state.active = ''
+    state.loading = true
   }
 }
 

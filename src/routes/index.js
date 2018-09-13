@@ -25,7 +25,6 @@ const routes = [
     name: 'site-create'
   }
 
-  // { path: '/testing', component: TestAgain }
 ]
 
 export default routes

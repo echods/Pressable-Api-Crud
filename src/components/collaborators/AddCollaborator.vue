@@ -30,10 +30,11 @@
             Content: 'application/json'
           },
           email: this.email,
-          siteId: this.$store.state.sites.active.id
+          id: this.$store.state.sites.active.id
         }
 
         this.$store.dispatch('collaborators/createCollaborator', params)
+        this.email = ''
       }
     },
     mounted() {

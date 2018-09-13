@@ -30,7 +30,7 @@
             Content: 'application/json'
           },
           url: this.url,
-          siteId: this.$store.state.sites.active.id
+          id: this.$store.state.sites.active.id
         }
 
         this.$store.dispatch('domains/createDomain', params)

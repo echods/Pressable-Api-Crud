@@ -1,6 +1,6 @@
 import auth from '../../api/auth'
 
-// initial state
+// Initial state
 const state = {
   access_token: '',
   refresh_token: '',
@@ -50,6 +50,13 @@ const actions = {
       // eslint-disable-next-line
       console.warn(error.response);
     });
+  },
+
+  logout({ commit, state, dispatch}) {
+    commit('LOGOUT')
+    dispatch('collaborators/clearAll', {}, { root:true })
+    dispatch('domains/clearAll', {}, { root:true })
+    dispatch('sites/clearAll', {}, { root:true })
   }
 
 }
@@ -60,6 +67,11 @@ const mutations = {
     state.access_token = account.access_token
     state.refresh_token = account.refresh_token
     state.isAuthenticated = true
+  },
+  LOGOUT(state) {
+    state.access_token = ''
+    state.refresh_token = ''
+    state.isAuthenticated = false
   }
 }
 

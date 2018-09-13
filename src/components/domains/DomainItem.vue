@@ -5,6 +5,7 @@
     </div>
     <div class="col text-left">
       <strong>Primary:</strong> {{ domain.primary }}
+      <span v-if="! domain.primary"> | <a href="#" @click.stop.prevent="makePrimary">Make Primary</a></span>
     </div>
     <div class="col delete">
       <a href="#" @click.stop.prevent="deleteDomain">
@@ -26,11 +27,23 @@
             Authorization: `Bearer ${this.$store.state.account.access_token}`,
             Content: 'application/json',
           },
-          siteId: this.$store.state.sites.active.id,
+          id: this.$store.state.sites.active.id,
           domainId: this.domain.id
         }
 
         this.$store.dispatch('domains/deleteDomain', params)
+      },
+      makePrimary() {
+        const params = {
+          headers: {
+            Authorization: `Bearer ${this.$store.state.account.access_token}`,
+            Content: 'application/json',
+          },
+          id: this.$store.state.sites.active.id,
+          domainId: this.domain.id
+        }
+
+        this.$store.dispatch('domains/makePrimary', params)
       }
     }
   }

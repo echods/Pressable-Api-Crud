@@ -9,6 +9,24 @@
         </div>
       </div>
 
+      <div class="row">
+        <div class="col" v-if="!isProduction">
+          <a href="#" @click.stop.prevent="enableProduction" class="btn btn-primary">Enable for Production</a>
+        </div>
+        <div class="col" v-else>
+          <a href="#" @click.stop.prevent="disableProduction" class="btn btn-primary">Disable Production</a>
+        </div>
+        <div class="col">
+          <a href="#" @click.stop.prevent="clearCache" class="btn btn-primary">Clear Cache</a>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <hr>
+        </div>
+      </div>
+
       <section class="row">
         <div class="col">
           <div class="row row-data">
@@ -172,6 +190,9 @@ export default {
     },
     domains() {
       return this.$store.state.domains.list
+    },
+    isProduction() {
+      return this.$store.state.sites.active.production
     }
   },
   methods: {
@@ -185,9 +206,24 @@ export default {
     getDomains() {
       const params = {
         headers: this.headers,
-        siteId: this.$store.state.sites.active.id
+        id: this.$store.state.sites.active.id
       }
       this.$store.dispatch('domains/getDomains', params)
+    },
+    enableProduction() {
+      this.$store.dispatch('sites/enableForProduction', this.headers)
+    },
+
+    disableProduction() {
+      this.$store.dispatch('sites/disableForProduction', this.headers)
+    },
+
+    clearCache() {
+      const params = {
+        headers: this.headers,
+        id: this.$store.state.sites.active.id
+      }
+      this.$store.dispatch('sites/clearCache', params)
     }
   },
   mounted() {

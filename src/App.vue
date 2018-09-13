@@ -18,6 +18,10 @@
           <li class="nav-item">
             <router-link :to="{ name: 'site-create' }" class="nav-link">Create Site</router-link>
           </li>
+
+          <li class="nav-item">
+            <a href="#" @click.stop.prevent="logout" class="nav-link">Logout</a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -36,7 +40,13 @@
 <script>
 
 export default {
-  name: 'app'
+  name: 'app',
+  methods: {
+    logout() {
+      this.$store.dispatch('account/logout')
+      this.$router.push({ name: "home" })
+    }
+  }
 }
 </script>
 

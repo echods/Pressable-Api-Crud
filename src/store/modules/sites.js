@@ -33,6 +33,21 @@ const actions = {
 
   },
 
+  getSite({ commit, state, dispatch }, headers) {
+    const id = state.active.id
+    api.get(`/sites/${id}`,
+      { headers }).then(function (response) {
+        if(response.status === 200) {
+          dispatch('setActiveSite', response.data)
+        }
+    }.bind(this))
+    .catch(function (error) {
+      // eslint-disable-next-line
+      console.warn(error.response);
+    });
+
+  },
+
   saveSite({ commit, state }, params) {
     const headers = params.headers
     const name = params.name
@@ -105,8 +120,51 @@ const actions = {
     });
   },
 
+  disableForProduction({ commit, state, dispatch }, headers) {
+
+    const id = state.active.id
+
+    api.delete(`/sites/${id}/production`,
+      { headers }).then(function (response) {
+        if(response.status === 200) {
+          swal("Disabled!", "Your site has been set to development!", "success");
+          dispatch('getSite', headers)
+        }
+      });
+  },
+
+  enableForProduction({ commit, state, dispatch }, headers) {
+
+    const id = state.active.id
+
+    api.post(`/sites/${id}/production`, {},
+      { headers }).then(function (response) {
+        if(response.status === 200) {
+          dispatch('getSite', headers)
+          swal("Enabled!", "Your site has been set to production!", "success");
+        }
+      });
+  },
+
+  clearCache({ commit, state }, params) {
+
+    const headers = params.headers
+    const id = params.id
+
+    api.delete(`/sites/${id}/cache`,
+      { headers }).then(function (response) {
+        if(response.status === 200) {
+          swal("Cached Deleted!", "Your site has been deleted!", "success");
+        }
+      });
+  },
+
   clearActiveSite({ commit, state }) {
     commit('CLEAR_ACTIVE_SITE')
+  },
+
+  clearAll( {commit, state} ) {
+    commit('CLEAR_ALL')
   }
 }
 
@@ -123,6 +181,12 @@ const mutations = {
 
   CLEAR_ACTIVE_SITE(state) {
     state.active = ''
+  },
+
+  CLEAR_ALL(state) {
+    state.list = [],
+    state.active = '',
+    state.loading = true
   }
 }
 
