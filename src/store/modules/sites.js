@@ -83,7 +83,7 @@ const actions = {
       { headers }).then(function (response) {
         if(response.status === 201) {
           swal("Great!", `Your site is being cloned and is titled ${response.data.name}. It will be done momentarily!`, "success");
-          dispatch('getSites')
+          dispatch('getSites', headers)
         }
       });
 
@@ -108,8 +108,8 @@ const actions = {
         api.delete(`/sites/${id}`,
           { headers }).then(function (response) {
             if(response.status === 200) {
-              dispatch('getSites', headers)
               swal("Deleted!", "Your site has been deleted!", "success");
+              dispatch('getSites', headers)
             }
         }.bind(this))
         .catch(function (error) {
