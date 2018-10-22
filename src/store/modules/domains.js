@@ -19,9 +19,8 @@ const actions = {
 
     api.get(`/sites/${id}/domains`,
       { headers }).then(function (response) {
-        // eslint-disable-next-line
         if(response.status === 200) {
-          commit('GET_DOMAINS', response.data)
+          commit('GET_DOMAINS', response.data.data)
         }
     }.bind(this))
     .catch(function (error) {

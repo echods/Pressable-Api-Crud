@@ -17,7 +17,7 @@ const actions = {
     api.get('/sites',
       { headers }).then(function (response) {
         if(response.status === 200) {
-          commit('SET_SITES', response.data)
+          commit('SET_SITES', response.data.data)
         }
     }.bind(this))
     .catch(function (error) {
@@ -139,10 +139,16 @@ const actions = {
 
     api.post(`/sites/${id}/production`, {},
       { headers }).then(function (response) {
-        if(response.status === 200) {
-          dispatch('getSite', headers)
-          swal("Enabled!", "Your site has been set to production!", "success");
-        }
+        console.log(response)
+        // if(response.status === 200) {
+        //   dispatch('getSite', headers)
+        //   swal("Enabled!", "Your site has been set to production!", "success");
+        // }
+      })
+      .catch(function (error) {
+        // eslint-disable-next-line
+        console.warn(error);
+        console.warn(error.response);
       });
   },
 

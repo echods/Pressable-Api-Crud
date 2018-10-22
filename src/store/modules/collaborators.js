@@ -20,7 +20,7 @@ const actions = {
     api.get(`/sites/${id}/collaborators`,
       { headers }).then(function (response) {
         if(response.status === 200) {
-          commit('GET_COLLABORATORS', response.data)
+          commit('GET_COLLABORATORS', response.data.data)
         }
     }.bind(this))
     .catch(function (error) {
